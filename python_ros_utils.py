@@ -1,5 +1,10 @@
 import rospy
 
+# core messages
+from std_msgs.msg import *
+from geometry_msgs.msg import *
+from sensor_msgs.msg import *
+
 def now():
   return rospy.get_time()
 
