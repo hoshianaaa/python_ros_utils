@@ -11,7 +11,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), './python_ros_utils'))
 #from python_utils import *
 from python_ros_utils import *
 
-class PSP:
+class PSP_string:
   def __init__(self,name):
     self.pub = rospy.Publisher(name + '_state', String, queue_size=1)
     self.sub = rospy.Subscriber(name, String, self.callback)
