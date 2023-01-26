@@ -26,6 +26,11 @@ class Timer:
     self.last = n
     return ret
 
+# 0.1151266098022461 ros_param_server load param time
+def init(node_name, sleep=0.2):
+  rospy.init_node(node_name)
+  rospy.sleep(sleep)
+
 if __name__ == '__main__':
   rospy.init_node("test")
   timer = Timer()
