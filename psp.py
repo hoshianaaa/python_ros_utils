@@ -62,7 +62,7 @@ class PSP_mode(PSP):
       pass
     else:
       self.data = self.mode_list[0]
-    self.list_pub = rospy.Publisher(name + '_mode_list', String, queue_size=1)
+    self.list_pub = rospy.Publisher(name + '_list', String, queue_size=1)
 
   def callback(self, msg):
     if msg.data in self.mode_list:
@@ -76,14 +76,14 @@ class PSP_mode(PSP):
 
 if __name__ == '__main__':
 
-  node_name = "param_sub_pub"
+  node_name = "sample"
   rospy.init_node(node_name)
 
   psp = PSP(node_name + "/param0")
   psp_num = PSP_num(node_name + "/param1", -2.0, 2.0)
   psp_mode = PSP_mode(node_name + "/mode", ["mode1","mode2","mode3"])
 
-  r = rospy.Rate(10)
+  r = rospy.Rate(100)
   while not rospy.is_shutdown():
     print("param0:", psp.process())
     print("param1:", psp_num.process())
