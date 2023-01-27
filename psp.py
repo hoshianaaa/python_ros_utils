@@ -54,18 +54,33 @@ class PSP_limit(PSP):
       self.data = msg.data
       rosparam.set_param(self.name, str(self.data))
 
+class PSP_mode(PSP):
+  def __init__(self, name, mode_list):
+    super().__init__(name, "String")
+    self.mode_list = mode_list
+    if self.data in self.mode_list:
+      pass
+    else:
+      self.data = self.mode_list[0]
+
+  def callback(self, msg):
+    if msg.data in self.mode_list:
+      self.data = msg.data
+      rosparam.set_param(self.name, str(self.data))
+
 if __name__ == '__main__':
 
   node_name = "param_sub_pub"
   rospy.init_node(node_name)
 
   test = PSP_limit(node_name + "/param1")
-  test_string = PSP(node_name + "/mode", "String")
+#  test_string = PSP(node_name + "/mode", "String")
+  psp_mode = PSP_mode(node_name + "/mode", ["mode1","mode2","mode3"])
 
   r = rospy.Rate(10)
   while not rospy.is_shutdown():
     print("param1:", test.process())
-    print("mode:", test_string.process())
+    print("mode:", psp_mode.process())
     r.sleep()
 
   '''
