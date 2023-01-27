@@ -62,11 +62,17 @@ class PSP_mode(PSP):
       pass
     else:
       self.data = self.mode_list[0]
+    self.list_pub = rospy.Publisher(name + '_mode_list', String, queue_size=1)
 
   def callback(self, msg):
     if msg.data in self.mode_list:
       self.data = msg.data
       rosparam.set_param(self.name, str(self.data))
+
+  def process(self):
+    self.pub.publish(String(self.data))
+    self.list_pub.publish(String(list2string(self.mode_list)))
+    return self.data
 
 if __name__ == '__main__':
 
