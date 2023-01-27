@@ -12,10 +12,28 @@ from python_utils import *
 from python_ros_utils import *
 
 class PSP:
-  def __init__(self,name):
-    self.pub = rospy.Publisher(name + '_state', Float64, queue_size=1)
-    self.sub = rospy.Subscriber(name, Float64, self.callback)
-    self.data = rospy.get_param(name, 0.0)
+  def __init__(self,name,type="Float64",default=None):
+
+    self.type = type
+
+    if (self.type == "String"):
+      print("psp type: String")
+      self.pub = rospy.Publisher(name + '_state', String, queue_size=1)
+      self.sub = rospy.Subscriber(name, String, self.callback)
+      if default is not None:
+        self.default_value = default
+      else:
+        self.default_value = "mode1"
+    else:
+      print("psp type: Float64")
+      self.pub = rospy.Publisher(name + '_state', Float64, queue_size=1)
+      self.sub = rospy.Subscriber(name, Float64, self.callback)
+      if default is not None:
+        self.default_value = default
+      else:
+        self.default_value = 0.0
+
+    self.data = rospy.get_param(name, self.default_value)
     self.name = name
 
   def callback(self, msg):
@@ -23,19 +41,31 @@ class PSP:
     rosparam.set_param(self.name, str(self.data))
 
   def process(self):
-    self.pub.publish(Float64(self.data))
+    if (self.type == "String"):
+      self.pub.publish(String(self.data))
+    else:
+      self.pub.publish(Float64(self.data))
+
     return self.data
+
+class PSP_limit(PSP):
+  def callback(self, msg):
+    if msg.data > 0:
+      self.data = msg.data
+      rosparam.set_param(self.name, str(self.data))
 
 if __name__ == '__main__':
 
   node_name = "param_sub_pub"
   rospy.init_node(node_name)
 
-  test = PSP(node_name + "/test_data1")
+  test = PSP_limit(node_name + "/param1")
+  test_string = PSP(node_name + "/mode", "String")
 
   r = rospy.Rate(10)
   while not rospy.is_shutdown():
-    print(test.process())
+    print("param1:", test.process())
+    print("mode:", test_string.process())
     r.sleep()
 
   '''
