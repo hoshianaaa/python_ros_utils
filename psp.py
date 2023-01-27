@@ -79,12 +79,13 @@ if __name__ == '__main__':
   node_name = "param_sub_pub"
   rospy.init_node(node_name)
 
-#  test_string = PSP(node_name + "/mode", "String")
+  psp = PSP(node_name + "/param0")
   psp_num = PSP_num(node_name + "/param1", -2.0, 2.0)
   psp_mode = PSP_mode(node_name + "/mode", ["mode1","mode2","mode3"])
 
   r = rospy.Rate(10)
   while not rospy.is_shutdown():
+    print("param0:", psp.process())
     print("param1:", psp_num.process())
     print("mode:", psp_mode.process())
     r.sleep()
