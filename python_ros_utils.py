@@ -9,6 +9,7 @@ import tf
 from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Vector3
 
+# euler_to_quaternion(Vector3(0.0, 0.0, math.pi / 2.0))
 def euler_to_quaternion(euler):
     """Convert Euler Angles to Quaternion
 
@@ -18,6 +19,7 @@ def euler_to_quaternion(euler):
     q = tf.transformations.quaternion_from_euler(euler.x, euler.y, euler.z)
     return Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
 
+# quaternion_to_euler(Quaternion(0.0, 0.0, 0.0, 1.0))
 def quaternion_to_euler(quaternion):
     """Convert Quaternion to Euler Angles
 
