@@ -65,3 +65,9 @@ if __name__ == '__main__':
   rosrun ros_sampler psp.py _pub:=aaa _sub:=aaa
   '''
 
+# ** test command **
+# rostopic pub /data
+# rostopic pub /data std_msgs/Float64 "data: 10.0"
+# rostopic pub /data std_msgs/Float64 "data: 100.0"
+
+
