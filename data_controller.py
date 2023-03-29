@@ -11,7 +11,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), './python_ros_utils'))
 from python_utils import *
 from python_ros_utils import *
 
-
 class DataController:
 
   def __init__(self,topic_name,error_th=0):
@@ -25,14 +24,17 @@ class DataController:
     self.error_th = error_th
     self.debug = 0
 
-  def wait(self)
+  def debug_on(self):
+    self.debug = 1
+
+  def wait(self):
     if self.target_value is None:
-      print("[ERROR] data controller(" + self.topic_name + "): set target value")
+      print("[ERROR] data controller(" + self.topic_name + "): please set target value")
       return
 
     while not rospy.is_shutdown():
       if self.debug:
-        print("[DEBUG] data controller(" + self.topic_name + "): wait")
+        print("[DEBUG] data controller(" + self.sub_topic_name + "): wait, state:" + str(self.state))
 
       if (self.state is not None):
         diff = abs(self.state - self.target_value)
@@ -54,6 +56,7 @@ if __name__ == '__main__':
   rospy.init_node(node_name)
 
   dc = DataController("data")
+  dc.debug_on()
   dc.send(100)
   dc.wait()
 

@@ -9,6 +9,15 @@ from sensor_msgs.msg import *
 # usage: https://qiita.com/honeytrap15/items/550c757f2964b575883c
 import rosparam
 
+
+def generate_publisher_and_wait(topic_name, topic_type):
+  r = rospy.Rate(10)
+  p = rospy.Publisher(topic_name, topic_type, queue_size=10)
+  while p.get_num_connections() < 1:
+    print("wait connection :", topic_name, topic_type)
+    r.sleep()
+  return p
+
 def now():
   return rospy.get_time()
 
